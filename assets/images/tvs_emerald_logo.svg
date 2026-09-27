@@ -1,0 +1,18 @@
+<svg width="240" height="52" viewBox="0 0 240 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- TVS Bold Italic Text -->
+  <text x="2" y="36" font-family="'Manrope', 'Arial Black', sans-serif" font-weight="900" font-style="italic" font-size="27" fill="#0E2E72" letter-spacing="-0.5">TVS</text>
+  
+  <!-- Emerald Green Badge with Slanted Top Roof -->
+  <g transform="translate(68, 6)">
+    <!-- White roof highlight -->
+    <path d="M0 17 L58 0 L58 3 L0 20 Z" fill="#6BB238"/>
+    <!-- Main green body -->
+    <path d="M0 21 L58 4 L58 40 L0 40 Z" fill="#2E8B34"/>
+    <!-- White text Emerald -->
+    <text x="5" y="33" font-family="'Georgia', Georgia, serif" font-weight="500" font-size="13.5" fill="#FFFFFF">Emerald</text>
+  </g>
+
+  <!-- Gold Divider & AVALON Text -->
+  <line x1="135" y1="8" x2="135" y2="44" stroke="#C89B3C" stroke-width="2"/>
+  <text x="144" y="34" font-family="'Playfair Display', Georgia, serif" font-weight="800" font-size="20" fill="#063C2D" letter-spacing="1.5">AVALON</text>
+</svg>

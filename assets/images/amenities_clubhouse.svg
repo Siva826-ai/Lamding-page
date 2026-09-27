@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <rect width="800" height="600" fill="#15423A"/>
+  <rect x="100" y="100" width="600" height="400" rx="16" fill="#0E2E28" stroke="#D7B579" stroke-width="2"/>
+  <text x="400" y="310" font-family="Georgia, serif" font-size="28" fill="#D7B579" font-weight="bold" text-anchor="middle">35,000 SQ. FT. CLUB GRANDEUR</text>
+</svg>

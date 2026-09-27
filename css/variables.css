@@ -1,0 +1,33 @@
+/* ==========================================================================
+   CSS VARIABLES & DESIGN TOKENS
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,600&display=swap');
+
+:root {
+  /* Color Palette */
+  --dark-emerald: #063C2D;
+  --deep-green: #0B4A38;
+  --gold: #C89B3C;
+  --champagne: #E8C878;
+  --white: #FFFFFF;
+  --soft-cream: #F8F5ED;
+  --text-dark: #17201C;
+  --text-muted: #5C6965;
+  
+  --border-light: #E0E7E4;
+  --border-gold: rgba(200, 155, 60, 0.4);
+
+  /* Elevation Shadows & Radius */
+  --shadow-sm: 0 4px 16px rgba(6, 60, 45, 0.06);
+  --shadow-md: 0 12px 32px rgba(6, 60, 45, 0.1);
+  --shadow-card: 0 20px 50px rgba(6, 60, 45, 0.18);
+  
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-card: 22px;
+  --radius-pill: 999px;
+  
+  --container-max: 1280px;
+  --header-h: 80px;
+}
