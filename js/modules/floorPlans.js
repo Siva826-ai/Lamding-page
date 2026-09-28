@@ -7,19 +7,19 @@ export function initFloorPlans(openImageInLightbox) {
       title: '2 BHK CLASSIC',
       area: '965 – 1,245 Sq. Ft.',
       subtitle: '2 BHK CLASSIC <span>(TOWER A - 101 TO 1401) WEST FACING</span>',
-      image: './assets/images/floor_plan.png'
+      image: 'assets/images/floor_plan.png'
     },
     '3bhk': {
       title: '3 BHK CLASSIC',
       area: '1,430 – 1,550 Sq. Ft.',
       subtitle: '3 BHK CLASSIC <span>(TOWER B & C - 102 TO 1402) EAST FACING</span>',
-      image: './assets/images/floor3.png'
+      image: 'assets/images/floor3.png'
     },
     '4bhk': {
       title: '4 BHK DUPLEX',
       area: '2,600+ Sq. Ft.',
       subtitle: '4 BHK DUPLEX <span>(TOWER D - PENTHOUSE 1401) NORTH-EAST FACING</span>',
-      image: './assets/images/floor4.png'
+      image: 'assets/images/floor4.png'
     }
   };
 
@@ -81,8 +81,14 @@ export function initFloorPlans(openImageInLightbox) {
       if (planArea) planArea.textContent = data.area;
       if (viewerSubTitle) viewerSubTitle.innerHTML = data.subtitle;
 
-      mainFloorImg.src = data.image;
+      // Extract the thumbnail's working browser-resolved URL to guarantee image loading on server
+      const activeThumb = document.querySelector(`.thumb-card-item[data-plan="${planKey}"]`);
+      const thumbImg = activeThumb ? activeThumb.querySelector('.thumb-img') : null;
+      const targetSrc = (thumbImg && thumbImg.src) ? thumbImg.src : data.image;
+
+      mainFloorImg.src = targetSrc;
       mainFloorImg.style.opacity = '1';
+      mainFloorImg.style.display = 'block';
     }
   }
 
