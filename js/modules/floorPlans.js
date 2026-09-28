@@ -23,6 +23,12 @@ export function initFloorPlans(openImageInLightbox) {
     }
   };
 
+  // Preload floor plan images for instant tab switching without lag or blank states
+  Object.values(floorPlanData).forEach(item => {
+    const img = new Image();
+    img.src = item.image;
+  });
+
   const planKeys = ['2bhk', '3bhk', '4bhk'];
   let currentPlanIndex = 0;
   let isFloorPlanUnlocked = false;
@@ -69,23 +75,24 @@ export function initFloorPlans(openImageInLightbox) {
     bhkTabBtns.forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-plan') === planKey));
     thumbCards.forEach(card => card.classList.toggle('active', card.getAttribute('data-plan') === planKey));
 
-    if (data) {
+    if (data && mainFloorImg) {
       if (planTitle) planTitle.textContent = data.title;
       if (planArea) planArea.textContent = data.area;
       if (viewerSubTitle) viewerSubTitle.innerHTML = data.subtitle;
-      if (mainFloorImg) {
-        mainFloorImg.style.opacity = '0.3';
-        setTimeout(() => {
-          mainFloorImg.src = data.image;
-          mainFloorImg.style.opacity = '1';
-        }, 150);
-      }
+
+      // Smoothly update main floor plan image without collapsing container or getting stuck
+      mainFloorImg.style.opacity = '0.6';
+      mainFloorImg.src = data.image;
+      
+      requestAnimationFrame(() => {
+        mainFloorImg.style.opacity = '1';
+      });
     }
   }
 
   if (leftUnlockBtn) {
     leftUnlockBtn.addEventListener('click', (e) => {
-      if (isFloorPlanUnlocked) {
+      if (isFloorPlanUnlocked && mainFloorImg) {
         e.stopPropagation();
         openImageInLightbox(mainFloorImg.src, planTitle ? planTitle.textContent : 'Floor Plan');
       }
@@ -120,7 +127,7 @@ export function initFloorPlans(openImageInLightbox) {
 
   if (zoomPlanBtn) {
     zoomPlanBtn.addEventListener('click', (e) => {
-      if (isFloorPlanUnlocked) {
+      if (isFloorPlanUnlocked && mainFloorImg) {
         e.stopPropagation();
         openImageInLightbox(mainFloorImg.src, planTitle ? planTitle.textContent : 'Floor Plan');
       }

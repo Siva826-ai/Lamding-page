@@ -29,16 +29,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // 6. Connectivity Small Cards & Modal Controller
   initConnectivity();
 
-  // 7. Hero Section Motion & Interactive 3D Parallax Effect
+  // 7. Hero Section Motion & Interactive 3D Parallax Effect (Desktop Pointer Only)
   const heroSection = document.querySelector('.hero-section');
   const motionLayer = document.querySelector('.hero-bg-motion-layer');
-  if (heroSection && motionLayer) {
+  const isTouchDevice = window.matchMedia('(pointer: coarse)').matches || window.innerWidth <= 768;
+
+  if (heroSection && motionLayer && !isTouchDevice) {
     heroSection.addEventListener('mousemove', (e) => {
       const { clientX, clientY } = e;
       const { innerWidth, innerHeight } = window;
-      const xOffset = ((clientX / innerWidth) - 0.5) * 16;
-      const yOffset = ((clientY / innerHeight) - 0.5) * 16;
-      motionLayer.style.transform = `scale(1.08) translate(${xOffset}px, ${yOffset}px)`;
+      const xOffset = ((clientX / innerWidth) - 0.5) * 12;
+      const yOffset = ((clientY / innerHeight) - 0.5) * 12;
+      motionLayer.style.transform = `scale(1.04) translate3d(${xOffset}px, ${yOffset}px, 0)`;
     });
 
     heroSection.addEventListener('mouseleave', () => {
