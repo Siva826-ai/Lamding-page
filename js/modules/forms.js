@@ -30,7 +30,7 @@ export function initForms(updateUnlockState, closeModal) {
     
     if (confirm(confirmMsg)) {
       const text = encodeURIComponent(`Hi! My name is ${name}. I submitted an enquiry for TVS Emerald AVALON. Please send me the brochure and cost sheet.`);
-      window.open(`https://api.whatsapp.com/send?phone=918610502715&text=${text}`, '_blank');
+      window.open(`https://api.whatsapp.com/send?phone=919187231016&text=${text}`, '_blank');
     }
 
     // Unlock floor plan upon actual form submission

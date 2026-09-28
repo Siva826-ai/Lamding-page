@@ -93,6 +93,22 @@ export function initGallery() {
     card.addEventListener('click', () => openLightbox(idx));
   });
 
+  const galleryGrid = document.getElementById('galleryGrid');
+  const galleryPrevBtn = document.getElementById('galleryPrevBtn');
+  const galleryNextBtn = document.getElementById('galleryNextBtn');
+
+  if (galleryPrevBtn && galleryGrid) {
+    galleryPrevBtn.addEventListener('click', () => {
+      galleryGrid.scrollBy({ left: -330, behavior: 'smooth' });
+    });
+  }
+
+  if (galleryNextBtn && galleryGrid) {
+    galleryNextBtn.addEventListener('click', () => {
+      galleryGrid.scrollBy({ left: 330, behavior: 'smooth' });
+    });
+  }
+
   if (viewFullGalleryBtn) {
     viewFullGalleryBtn.addEventListener('click', () => openLightbox(0));
   }
