@@ -1,7 +1,7 @@
 {
   "name": "real-estate-landing-page",
   "version": "1.0.0",
-  "description": "Luxury Real-Estate Landing Page for Aurelia Palms Radial Road",
+  "description": "Luxury Real-Estate Landing Page for TVS Emerald Avalon",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,6 +10,7 @@
     "start": "npx serve ."
   },
   "devDependencies": {
+    "dotenv": "^16.4.5",
     "vite": "^5.0.0"
   },
   "dependencies": {
