@@ -7,19 +7,19 @@ export function initFloorPlans(openImageInLightbox) {
       title: '2 BHK CLASSIC',
       area: '965 – 1,245 Sq. Ft.',
       subtitle: '2 BHK CLASSIC <span>(TOWER A - 101 TO 1401) WEST FACING</span>',
-      image: 'assets/images/floor_plan.png'
+      image: './assets/images/floor_plan.png'
     },
     '3bhk': {
       title: '3 BHK CLASSIC',
       area: '1,430 – 1,550 Sq. Ft.',
       subtitle: '3 BHK CLASSIC <span>(TOWER B & C - 102 TO 1402) EAST FACING</span>',
-      image: 'assets/images/floor3.png'
+      image: './assets/images/floor3.png'
     },
     '4bhk': {
       title: '4 BHK DUPLEX',
       area: '2,600+ Sq. Ft.',
       subtitle: '4 BHK DUPLEX <span>(TOWER D - PENTHOUSE 1401) NORTH-EAST FACING</span>',
-      image: 'assets/images/floor4.png'
+      image: './assets/images/floor4.png'
     }
   };
 
@@ -50,6 +50,7 @@ export function initFloorPlans(openImageInLightbox) {
     isFloorPlanUnlocked = unlocked;
     if (mainFloorImg) {
       mainFloorImg.classList.toggle('is-blurred', !unlocked);
+      mainFloorImg.style.opacity = '1';
     }
     if (centerLockOverlayBtn) {
       centerLockOverlayBtn.classList.toggle('is-hidden', unlocked);
@@ -80,13 +81,8 @@ export function initFloorPlans(openImageInLightbox) {
       if (planArea) planArea.textContent = data.area;
       if (viewerSubTitle) viewerSubTitle.innerHTML = data.subtitle;
 
-      // Smoothly update main floor plan image without collapsing container or getting stuck
-      mainFloorImg.style.opacity = '0.6';
       mainFloorImg.src = data.image;
-      
-      requestAnimationFrame(() => {
-        mainFloorImg.style.opacity = '1';
-      });
+      mainFloorImg.style.opacity = '1';
     }
   }
 
