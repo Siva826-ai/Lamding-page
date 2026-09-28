@@ -55,18 +55,18 @@ export function initConnectivity() {
       ]
     },
     ent: {
-      title: 'Entertainment Hubs',
-      icon: '🎬',
+      title: 'Shopping & Leisure Hubs',
+      icon: '🛍️',
       subtitle: '9 Premier Malls, Shopping Centers & Theaters nearby',
       items: [
-        { name: 'Savarana Selvarathanam', dist: '1.8 km' },
+        { name: 'Saravana Selvarathanam Ultimate Store', dist: '1.8 km' },
         { name: 'Super Saravana Stores', dist: '4.7 km' },
         { name: 'Pothys', dist: '6.4 km' },
         { name: 'The Chennai Silks', dist: '6.5 km' },
-        { name: 'Aerohub Mall', dist: '7 km' },
+        { name: 'AEROHUB Mall', dist: '7 km' },
         { name: 'PVR Grand Galada Center', dist: '7.4 km' },
         { name: 'Grand Square Mall', dist: '8.1 km' },
-        { name: 'Phoenix Market City', dist: '10 km' },
+        { name: 'Phoenix Mall (Market City)', dist: '10 km' },
         { name: 'BSR Mall', dist: '11 km' }
       ]
     }

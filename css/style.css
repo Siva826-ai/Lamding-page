@@ -140,7 +140,7 @@ h1, h2, h3, h4 {
 .mobile-menu-drawer a { font-size: 1.05rem; font-weight: 700; color: var(--dark-emerald); padding-bottom: 8px; border-bottom: 1px solid var(--border-light); }
 
 /* ==========================================================================
-   HERO SECTION & USER ATTACHED SUNSET BACKGROUND IMAGE
+   HERO SECTION & CINEMATIC MOTION GRAPHIC BACKDROP
    ========================================================================== */
 .hero-section {
   position: relative;
@@ -152,20 +152,72 @@ h1, h2, h3, h4 {
   padding: 80px 0 130px;
   color: #FFFFFF;
   overflow: hidden;
-  
-  /* Background Layers: Gradient Overlay + User's image.png background */
-  background-image: 
-    linear-gradient(
-      90deg,
-      rgba(3, 35, 27, 0.85) 0%,
-      rgba(3, 35, 27, 0.40) 40%,
-      rgba(3, 35, 27, 0.05) 75%,
-      rgba(0, 0, 0, 0.15) 100%
-    ),
-    url('../assets/images/image.png');
+  background: #03231B;
+}
+
+/* Background Motion Container */
+.hero-bg-motion-container {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Background Image Layer with Ken Burns Slow Motion & Parallax */
+.hero-bg-motion-layer {
+  position: absolute;
+  top: -6%;
+  left: -6%;
+  width: 112%;
+  height: 112%;
+  background-image: url('../assets/images/image.png');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
+  animation: heroCinematicMotion 28s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* Ken Burns Slow Cinematic Zoom & Pan Keyframes */
+@keyframes heroCinematicMotion {
+  0% {
+    transform: scale(1.0) translate(0%, 0%);
+  }
+  50% {
+    transform: scale(1.10) translate(-1.5%, -1%);
+  }
+  100% {
+    transform: scale(1.04) translate(1%, 0.5%);
+  }
+}
+
+/* Dark Luxury Gradient Overlay for High Contrast Text Visibility */
+.hero-bg-overlay-gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    rgba(3, 35, 27, 0.88) 0%,
+    rgba(3, 35, 27, 0.55) 45%,
+    rgba(3, 35, 27, 0.20) 75%,
+    rgba(0, 0, 0, 0.30) 100%
+  );
+}
+
+/* Subtle Ambient Light Flare / Particle Wave */
+.hero-cinematic-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: radial-gradient(circle at 75% 30%, rgba(200, 155, 60, 0.18) 0%, transparent 60%);
+  animation: heroAmbientPulse 10s ease-in-out infinite alternate;
+}
+
+@keyframes heroAmbientPulse {
+  0% { opacity: 0.4; transform: scale(1); }
+  100% { opacity: 0.85; transform: scale(1.15); }
 }
 
 .hero-grid {
@@ -1364,36 +1416,12 @@ h1, h2, h3, h4 {
   color: #FFFFFF;
 }
 
-/* 18-AMENITY COLLAGE GALLERY GRID */
+/* 18-AMENITY UNIFIED GALLERY GRID */
 .gallery-collage-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 100%;
-}
-
-/* TOP HERO ROW: 4 FEATURED CARDS */
-.gallery-hero-row {
-  display: grid;
-  grid-template-columns: 2.2fr 3.2fr 1.6fr 2fr;
-  gap: 16px;
-  height: 290px;
-}
-
-/* ROW 2: 4 CARDS */
-.gallery-grid-row-4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
-  height: 220px;
-}
-
-/* ROW 3 & 4: 5 CARDS EACH */
-.gallery-grid-row-5 {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
-  height: 210px;
+  width: 100%;
 }
 
 /* Individual Gallery Card Item */
@@ -1402,11 +1430,16 @@ h1, h2, h3, h4 {
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 6px 20px rgba(6, 60, 45, 0.08);
-  cursor: default;
-  pointer-events: none;
+  cursor: pointer;
+  pointer-events: auto;
   background: #0B241C;
-  height: 100%;
+  height: 240px;
   transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.gallery-card-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(6, 60, 45, 0.16);
 }
 
 .gallery-card-item img {
@@ -1452,46 +1485,46 @@ h1, h2, h3, h4 {
   text-overflow: ellipsis;
 }
 
-/* RESPONSIVE BREAKPOINTS FOR GALLERY COLLAGE */
+/* RESPONSIVE BREAKPOINTS FOR UNIFIED GALLERY GRID */
 @media (max-width: 1200px) {
-  .gallery-hero-row {
-    grid-template-columns: repeat(2, 1fr);
-    height: auto;
-  }
-  .gallery-hero-row .gallery-card-item {
-    height: 230px;
-  }
-  .gallery-grid-row-4 {
-    grid-template-columns: repeat(2, 1fr);
-    height: auto;
-  }
-  .gallery-grid-row-4 .gallery-card-item {
-    height: 210px;
-  }
-  .gallery-grid-row-5 {
+  .gallery-collage-container {
     grid-template-columns: repeat(3, 1fr);
-    height: auto;
   }
-  .gallery-grid-row-5 .gallery-card-item {
-    height: 200px;
+  .gallery-card-item {
+    height: 220px;
   }
 }
 
 @media (max-width: 768px) {
-  .gallery-hero-row {
-    grid-template-columns: 1fr;
+  .gallery-filter-pills [data-filter="all"] {
+    display: none !important;
   }
-  .gallery-grid-row-4 {
-    grid-template-columns: 1fr;
+  .gallery-filter-pills {
+    overflow-x: auto;
+    max-width: 100%;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
   }
-  .gallery-grid-row-5 {
+  .gallery-pill-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .gallery-collage-container {
     grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .gallery-card-item {
+    height: 200px;
   }
 }
 
 @media (max-width: 480px) {
-  .gallery-grid-row-5 {
+  .gallery-collage-container {
     grid-template-columns: 1fr;
+  }
+  .gallery-card-item {
+    height: 220px;
   }
 }
 
@@ -2287,7 +2320,8 @@ h1, h2, h3, h4 {
 .mobile-sticky-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .mobile-sticky-actions a, .mobile-sticky-actions button { min-height: 44px; border-radius: 10px; border: none; font-size: 0.75rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; }
 .mobile-sticky-actions .call { color: var(--dark-emerald); background: var(--soft-cream); }
-.mobile-sticky-actions .whatsapp { color: #FFF; background: #168A4B; }
+.mobile-sticky-actions .whatsapp { color: #FFF; background: #25D366; }
+.mobile-sticky-actions .whatsapp:hover { background: #1EBE57; }
 .mobile-sticky-actions .enquire { color: #FFF; background: var(--dark-emerald); }
 
 /* Modal Overlay & Responsive Form Card */
@@ -2401,7 +2435,8 @@ h1, h2, h3, h4 {
 }
 
 .btn-call { background: var(--dark-emerald); }
-.btn-whatsapp { background: #168A4B; }
+.btn-whatsapp { background: #25D366 !important; }
+.btn-whatsapp:hover { background: #1EBE57 !important; }
 .btn-insta { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
 .btn-enquire { background: var(--gold); }
 
@@ -2784,9 +2819,19 @@ h1, h2, h3, h4 {
   margin-bottom: 30px;
 }
 
+.connectivity-grid-3cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 10px;
+}
+
 @media (max-width: 1100px) {
   .connectivity-grid-4cards {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .connectivity-grid-3cards {
+    grid-template-columns: 1fr;
   }
 }
 

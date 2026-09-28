@@ -74,6 +74,21 @@ export function initGallery() {
     });
   });
 
+  // On mobile screen (<= 768px), since 'All' filter is hidden via CSS, select first category filter
+  function initMobileFilterState() {
+    if (window.innerWidth <= 768) {
+      const activeBtn = document.querySelector('.gallery-pill-btn.active');
+      if (!activeBtn || activeBtn.getAttribute('data-filter') === 'all') {
+        const firstCategoryBtn = Array.from(galleryFilterBtns).find(btn => btn.getAttribute('data-filter') !== 'all');
+        if (firstCategoryBtn) {
+          firstCategoryBtn.click();
+        }
+      }
+    }
+  }
+
+  initMobileFilterState();
+
   galleryCards.forEach((card, idx) => {
     card.addEventListener('click', () => openLightbox(idx));
   });
