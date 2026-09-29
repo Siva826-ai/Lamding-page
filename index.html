@@ -148,7 +148,7 @@
             <h3>Book a Site Visit</h3>
             <p>Get exclusive offers, floor plans and pricing details.</p>
           </div>
-          <form id="heroCardForm">
+          <form id="heroCardForm" novalidate>
             <!-- Honeypot Bot Protection -->
             <input type="text" name="website_hp" style="display:none !important;" tabindex="-1" autocomplete="off">
             <div class="input-icon-group">
@@ -169,7 +169,7 @@
                 <svg width="10" height="6" viewBox="0 0 10 6" fill="none" style="margin: 0 2px;"><path d="M1 1L5 5L9 1" stroke="#0F172A" stroke-width="1.8" stroke-linecap="round"/></svg>
                 <span>+91</span>
               </div>
-              <input type="tel" class="input-field-styled phone-field-clean" id="hero-phone" name="mobile" placeholder="Enter Phone Number" pattern="[0-9]{10,12}" required>
+              <input type="tel" class="input-field-styled phone-field-clean" id="hero-phone" name="mobile" placeholder="Enter Phone Number" pattern="[0-9]{10}" maxlength="10" inputmode="numeric">
             </div>
 
             <div class="input-icon-group">
@@ -1397,7 +1397,7 @@
 
             <!-- RIGHT SIDE: WHITE COMPACT ENQUIRY FORM CARD -->
             <div class="callback-form-card">
-              <form id="callbackForm">
+              <form id="callbackForm" novalidate>
                 <!-- Honeypot Bot Protection -->
                 <input type="text" name="website_hp" style="display:none !important;" tabindex="-1" autocomplete="off">
                 
@@ -1426,7 +1426,7 @@
                         <svg width="9" height="5" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="#063C2D" stroke-width="1.5" stroke-linecap="round"/></svg>
                         <span>+91</span>
                       </div>
-                      <input type="tel" class="input-field-styled phone-field-clean" id="cb-phone" name="mobile" placeholder="Enter Phone Number" pattern="[0-9]{10,12}" required>
+                      <input type="tel" class="input-field-styled phone-field-clean" id="cb-phone" name="mobile" placeholder="Enter Phone Number" pattern="[0-9]{10}" maxlength="10" inputmode="numeric">
                     </div>
                   </div>
                 </div>
@@ -1694,7 +1694,7 @@
         <p style="font-size:0.8rem; color:var(--text-muted); line-height:1.35;">Fill in your details to receive instant price sheet and floor plans.</p>
       </div>
 
-      <form id="popupForm">
+      <form id="popupForm" novalidate>
         <!-- Honeypot Bot Protection -->
         <input type="text" name="website_hp" style="display:none !important;" tabindex="-1" autocomplete="off">
         <div class="input-icon-group">
@@ -1715,7 +1715,7 @@
             <span>+91</span>
             <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="#063C2D" stroke-width="1.5" stroke-linecap="round"/></svg>
           </div>
-          <input type="tel" class="input-field-styled" id="pop-mobile" name="mobile" placeholder="Enter Phone Number" pattern="[0-9]{10,12}" required>
+          <input type="tel" class="input-field-styled" id="pop-mobile" name="mobile" placeholder="Enter Phone Number" pattern="[0-9]{10}" maxlength="10" inputmode="numeric">
         </div>
 
         <div class="input-icon-group">

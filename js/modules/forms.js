@@ -1,5 +1,5 @@
 /**
- * Form Submissions & Lead Conversion Handler
+ * Form Submissions & Custom Lead Validation Handler
  */
 export function initForms(updateUnlockState, closeModal) {
   function showCustomNotification(title, message) {
@@ -31,36 +31,122 @@ export function initForms(updateUnlockState, closeModal) {
     }, 6000);
   }
 
+  function clearFormErrors(form) {
+    form.querySelectorAll('.form-error-msg').forEach(el => el.remove());
+    form.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
+  }
+
+  function showInlineFieldError(inputElement, targetGroup, messageText) {
+    if (!targetGroup) return;
+
+    let errorSpan = targetGroup.nextElementSibling;
+    if (!errorSpan || !errorSpan.classList.contains('form-error-msg')) {
+      errorSpan = document.createElement('span');
+      errorSpan.className = 'form-error-msg';
+      targetGroup.insertAdjacentElement('afterend', errorSpan);
+    }
+    errorSpan.textContent = messageText;
+
+    if (inputElement) {
+      inputElement.classList.add('has-error');
+      if (targetGroup && targetGroup !== inputElement) {
+        targetGroup.classList.add('has-error');
+      }
+
+      const removeError = () => {
+        if (errorSpan && errorSpan.parentNode) {
+          errorSpan.remove();
+        }
+        inputElement.classList.remove('has-error');
+        if (targetGroup && targetGroup !== inputElement) {
+          targetGroup.classList.remove('has-error');
+        }
+        inputElement.removeEventListener('input', removeError);
+        inputElement.removeEventListener('change', removeError);
+      };
+
+      inputElement.addEventListener('input', removeError);
+      inputElement.addEventListener('change', removeError);
+    }
+  }
+
+  // Enforce digits only & 10 digits maximum limit across all mobile fields
+  document.querySelectorAll('input[name="mobile"]').forEach(input => {
+    input.addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
+    });
+  });
+
   async function handleFormSubmit(e, sourceName) {
     e.preventDefault();
     const form = e.target;
+    clearFormErrors(form);
+
     const nameInput = form.querySelector('input[name="name"]');
     const mobileInput = form.querySelector('input[name="mobile"]');
     const emailInput = form.querySelector('input[name="email"]');
+    const selectElem = form.querySelector('select[name="interest"], select[name="config"]');
+    const hpInput = form.querySelector('input[name="website_hp"]');
 
     const name = nameInput ? nameInput.value.trim() : '';
     const mobile = mobileInput ? mobileInput.value.trim() : '';
     const email = emailInput ? emailInput.value.trim() : '';
-    const selectElem = form.querySelector('select[name="interest"], select[name="config"]');
-    const interest = selectElem && selectElem.value ? selectElem.value.trim() : 'Not Specified';
-    const hpInput = form.querySelector('input[name="website_hp"]');
+    const interest = selectElem && selectElem.value ? selectElem.value.trim() : '';
     const website_hp = hpInput ? hpInput.value.trim() : '';
 
-    // Strict Mandatory Field Validation: Name and Phone Number are MANDATORY
-    const cleanPhoneDigits = mobile.replace(/\D/g, '');
-    if (!name || name.length < 2) {
-      showCustomNotification('Name Required', 'Please enter your Full Name before submitting.');
-      if (nameInput) nameInput.focus();
+    let firstErrorInput = null;
+
+    // 1. Full Name Validation
+    if (nameInput) {
+      const nameGroup = nameInput.closest('.input-icon-group') || nameInput.closest('.form-field-group') || nameInput;
+      if (!name || name.length < 2) {
+        showInlineFieldError(nameInput, nameGroup, 'Name field is required.');
+        if (!firstErrorInput) firstErrorInput = nameInput;
+      }
+    }
+
+    // 2. Phone Number Validation (Strict 10 digits)
+    if (mobileInput) {
+      const phoneContainer = mobileInput.closest('.phone-input-flex') || mobileInput.closest('.input-icon-group') || mobileInput;
+      const cleanPhoneDigits = mobile.replace(/\D/g, '');
+      if (!mobile) {
+        showInlineFieldError(mobileInput, phoneContainer, 'Mobile field is required.');
+        if (!firstErrorInput) firstErrorInput = mobileInput;
+      } else if (cleanPhoneDigits.length !== 10) {
+        showInlineFieldError(mobileInput, phoneContainer, 'Please enter a valid 10-digit mobile number.');
+        if (!firstErrorInput) firstErrorInput = mobileInput;
+      }
+    }
+
+    // 3. Email Address Validation
+    if (emailInput) {
+      const emailGroup = emailInput.closest('.input-icon-group') || emailInput.closest('.form-field-group') || emailInput;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email) {
+        showInlineFieldError(emailInput, emailGroup, 'Email field is required.');
+        if (!firstErrorInput) firstErrorInput = emailInput;
+      } else if (!emailRegex.test(email)) {
+        showInlineFieldError(emailInput, emailGroup, 'Please enter a valid email address.');
+        if (!firstErrorInput) firstErrorInput = emailInput;
+      }
+    }
+
+    // 4. Interested Configuration Validation (only if field exists in this form)
+    if (selectElem) {
+      const selectGroup = selectElem.closest('.input-icon-group') || selectElem.closest('.select-wrapper-custom') || selectElem;
+      if (!interest || interest === '' || interest === 'Not Specified') {
+        showInlineFieldError(selectElem, selectGroup, 'Please select your configuration.');
+        if (!firstErrorInput) firstErrorInput = selectElem;
+      }
+    }
+
+    // Stop processing if any validation errors exist
+    if (firstErrorInput) {
+      firstErrorInput.focus();
       return;
     }
 
-    if (!mobile || cleanPhoneDigits.length < 10) {
-      showCustomNotification('Valid Phone Number Required', 'Please enter a valid 10-digit Phone Number.');
-      if (mobileInput) mobileInput.focus();
-      return;
-    }
-
-    // Bot Defense: If honeypot is filled out by automated spam bot, stop processing
+    // Bot Defense: Honeypot check
     if (website_hp) {
       showCustomNotification('Enquiry Submitted Successfully!', `Thank you, ${name}! Your enquiry for TVS Emerald AVALON has been received.`);
       form.reset();
@@ -76,7 +162,7 @@ export function initForms(updateUnlockState, closeModal) {
 
     // 1. Submit to Web3Forms API (Delivers lead email)
     const web3Key = 'd97b2b67-f0c7-4f9c-ae6f-69394c2fc096';
-    const messageDetails = `Project Name: TVS Emerald AVALON\nInterested Configuration: ${interest}\nForm Source: ${sourceName}`;
+    const messageDetails = `Project Name: TVS Emerald AVALON\nInterested Configuration: ${interest || 'Not Specified'}\nForm Source: ${sourceName}`;
 
     const web3Promise = fetch('https://api.web3forms.com/submit', {
       method: 'POST',
@@ -98,11 +184,11 @@ export function initForms(updateUnlockState, closeModal) {
     })
     .catch((err) => console.warn('Web3Forms dispatch error:', err));
 
-    // 2. Also submit to submit.php (Runs on cPanel/PHP host fallback with honeypot validation)
+    // 2. Also submit to submit.php (Runs on cPanel/PHP host fallback)
     const phpPromise = fetch('submit.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ name, mobile, email, interest, form_source: sourceName, project_name: 'TVS Emerald AVALON', website_hp })
+      body: new URLSearchParams({ name, mobile, email, interest: interest || 'Not Specified', form_source: sourceName, project_name: 'TVS Emerald AVALON', website_hp })
     }).catch(() => {});
 
     // Show Custom Luxury Toast Notification IMMEDIATELY

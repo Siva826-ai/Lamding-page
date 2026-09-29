@@ -351,7 +351,7 @@ h1, h2, h3, h4 {
   height: 52px;
   padding: 0 12px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .phone-input-flex:focus-within {
@@ -3620,4 +3620,141 @@ h1, h2, h3, h4 {
     font-size: 0.88rem !important;
     text-align: center !important;
   }
+}
+
+/* ==========================================================================
+   INLINE RED ERROR MESSAGES & SEARCHABLE COUNTRY PICKER STYLES
+   ========================================================================== */
+.form-error-msg {
+  color: #dc2626 !important;
+  font-family: 'Manrope', sans-serif !important;
+  font-size: 0.76rem !important;
+  font-weight: 600 !important;
+  margin-top: 4px !important;
+  margin-bottom: 6px !important;
+  display: block !important;
+  animation: errorFadeIn 0.2s ease !important;
+  text-align: left !important;
+}
+
+@keyframes errorFadeIn {
+  from { opacity: 0; transform: translateY(-3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.input-field-styled.has-error,
+.phone-input-flex.has-error,
+.input-icon-group.has-error {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15) !important;
+}
+
+/* Country Selector Wrapper & Panel */
+.country-select-wrapper {
+  position: relative !important;
+}
+
+.country-select-btn {
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  cursor: pointer !important;
+  padding: 4px 6px !important;
+  background: transparent !important;
+  border: none !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  color: #0F172A !important;
+  user-select: none !important;
+}
+
+.country-flag-icon {
+  font-size: 1.15rem !important;
+  line-height: 1 !important;
+}
+
+.country-dial-code {
+  font-weight: 600 !important;
+  font-size: 0.88rem !important;
+  color: #1E293B !important;
+}
+
+.country-arrow {
+  font-size: 0.7rem !important;
+  color: #64748B !important;
+  transition: transform 0.2s ease !important;
+}
+
+.country-select-panel {
+  position: absolute !important;
+  top: calc(100% + 6px) !important;
+  left: 0 !important;
+  z-index: 99999 !important;
+  background: #FFFFFF !important;
+  border: 1px solid #CBD5E1 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18) !important;
+  width: 320px !important;
+  max-width: 90vw !important;
+  display: none !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+.country-select-panel.open {
+  display: flex !important;
+}
+
+.country-search-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  padding: 6px 10px !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+  background: #F8FAFC !important;
+}
+
+.country-search-wrapper .search-icon {
+  font-size: 0.85rem !important;
+  margin-right: 6px !important;
+  opacity: 0.7 !important;
+}
+
+.country-search-input {
+  flex: 1 !important;
+  border: none !important;
+  background: transparent !important;
+  font-size: 0.88rem !important;
+  outline: none !important;
+  font-family: 'Manrope', sans-serif !important;
+  color: #0F172A !important;
+  padding: 4px 0 !important;
+}
+
+.country-list-scroll {
+  overflow-y: auto !important;
+  max-height: 210px !important;
+}
+
+.country-option-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 8px 12px !important;
+  font-size: 0.86rem !important;
+  cursor: pointer !important;
+  transition: background 0.15s ease !important;
+  color: #1E293B !important;
+  font-family: 'Manrope', sans-serif !important;
+}
+
+.country-option-item:hover,
+.country-option-item.selected {
+  background: #F1F5F9 !important;
+}
+
+.country-option-item .dial-code {
+  color: #64748B !important;
+  font-size: 0.84rem !important;
+  margin-left: auto !important;
+  font-weight: 500 !important;
 }

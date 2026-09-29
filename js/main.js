@@ -9,8 +9,12 @@ import { initModal } from './modules/modal.js';
 import { initForms } from './modules/forms.js';
 import { initGallery } from './modules/gallery.js';
 import { initConnectivity } from './modules/connectivity.js';
+import { initCountryPickers } from './modules/countryPicker.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  // 0. Country Pickers
+  initCountryPickers();
+
   // 1. Mobile Navigation
   initMobileMenu();
 
