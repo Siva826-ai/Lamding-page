@@ -30,10 +30,10 @@ export function initModal() {
     }
   }
 
-  // Auto-open first time Enquiry Popup after 35 seconds (30-40 sec range)
+  // Auto-open first time Enquiry Popup on initial page load (Centered on screen with backdrop blur)
   setTimeout(() => {
     openModal('Priority Assistance - TVS Emerald Avalon', false);
-  }, 35000);
+  }, 1500);
 
   // Auto-open Enquiry Popup every 35 seconds if closed (NO BACKDROP BLUR - website stays visible & scrollable!)
   setInterval(() => {
