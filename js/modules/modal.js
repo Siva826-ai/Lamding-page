@@ -11,37 +11,36 @@ export function initModal() {
   function openModal(titleText = 'Enquire Now', isRecurring = false) {
     if (modalTitle) modalTitle.textContent = titleText;
     if (modalOverlay) {
-      if (isRecurring && !isFirstTime) {
-        modalOverlay.classList.add('no-backdrop', 'corner-pop');
+      if (isRecurring) {
+        modalOverlay.classList.add('no-backdrop');
+        document.body.style.overflow = '';
       } else {
-        modalOverlay.classList.remove('no-backdrop', 'corner-pop');
-      }
-      modalOverlay.classList.add('open');
-      if (!isRecurring || isFirstTime) {
+        modalOverlay.classList.remove('no-backdrop');
         document.body.style.overflow = 'hidden';
       }
+      modalOverlay.classList.add('open');
     }
   }
 
   function closeModal() {
     if (modalOverlay) {
-      modalOverlay.classList.remove('open', 'no-backdrop', 'corner-pop');
+      modalOverlay.classList.remove('open', 'no-backdrop');
       document.body.style.overflow = '';
       isFirstTime = false;
     }
   }
 
-  // Auto-open first time Enquiry Popup (Centered modal with full background backdrop overlay)
+  // Auto-open first time Enquiry Popup after 35 seconds (30-40 sec range)
   setTimeout(() => {
     openModal('Priority Assistance - TVS Emerald Avalon', false);
-  }, 1500);
+  }, 35000);
 
-  // Auto-open Enquiry Popup every 10 seconds if closed (Corner popup with NO background overlay)
-  let autoModalInterval = setInterval(() => {
+  // Auto-open Enquiry Popup every 35 seconds if closed (NO BACKDROP BLUR - website stays visible & scrollable!)
+  setInterval(() => {
     if (modalOverlay && !modalOverlay.classList.contains('open')) {
       openModal('Priority Assistance - TVS Emerald Avalon', true);
     }
-  }, 10000);
+  }, 35000);
 
   // Event Delegation for All Modal Triggers Across the Website
   document.addEventListener('click', (e) => {

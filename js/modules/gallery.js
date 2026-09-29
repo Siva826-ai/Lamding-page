@@ -97,15 +97,69 @@ export function initGallery() {
   const galleryPrevBtn = document.getElementById('galleryPrevBtn');
   const galleryNextBtn = document.getElementById('galleryNextBtn');
 
+  // Auto-Slide Gallery Controller (Smooth step auto-scroll every 2.8s)
+  let autoSlideTimer = null;
+  let isHovered = false;
+
+  function startGalleryAutoScroll() {
+    stopGalleryAutoScroll();
+    autoSlideTimer = setInterval(() => {
+      if (!galleryGrid || isHovered) return;
+      const cardStep = 328; // Card width (310px) + gap (18px)
+      const maxScroll = galleryGrid.scrollWidth - galleryGrid.clientWidth;
+
+      if (galleryGrid.scrollLeft >= maxScroll - 15) {
+        galleryGrid.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        galleryGrid.scrollBy({ left: cardStep, behavior: 'smooth' });
+      }
+    }, 2800);
+  }
+
+  function stopGalleryAutoScroll() {
+    if (autoSlideTimer) {
+      clearInterval(autoSlideTimer);
+      autoSlideTimer = null;
+    }
+  }
+
+  // Start auto scroll on init
+  startGalleryAutoScroll();
+
+  // Pause on hover / touch
+  if (galleryGrid) {
+    galleryGrid.addEventListener('mouseenter', () => { isHovered = true; });
+    galleryGrid.addEventListener('mouseleave', () => { isHovered = false; });
+    galleryGrid.addEventListener('touchstart', () => { isHovered = true; }, { passive: true });
+    galleryGrid.addEventListener('touchend', () => {
+      setTimeout(() => { isHovered = false; }, 2000);
+    }, { passive: true });
+  }
+
   if (galleryPrevBtn && galleryGrid) {
     galleryPrevBtn.addEventListener('click', () => {
-      galleryGrid.scrollBy({ left: -330, behavior: 'smooth' });
+      isHovered = true;
+      const cardStep = 328;
+      if (galleryGrid.scrollLeft <= 5) {
+        galleryGrid.scrollTo({ left: galleryGrid.scrollWidth, behavior: 'smooth' });
+      } else {
+        galleryGrid.scrollBy({ left: -cardStep, behavior: 'smooth' });
+      }
+      setTimeout(() => { isHovered = false; }, 2000);
     });
   }
 
   if (galleryNextBtn && galleryGrid) {
     galleryNextBtn.addEventListener('click', () => {
-      galleryGrid.scrollBy({ left: 330, behavior: 'smooth' });
+      isHovered = true;
+      const cardStep = 328;
+      const maxScroll = galleryGrid.scrollWidth - galleryGrid.clientWidth;
+      if (galleryGrid.scrollLeft >= maxScroll - 15) {
+        galleryGrid.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        galleryGrid.scrollBy({ left: cardStep, behavior: 'smooth' });
+      }
+      setTimeout(() => { isHovered = false; }, 2000);
     });
   }
 

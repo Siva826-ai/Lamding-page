@@ -1445,7 +1445,6 @@ h1, h2, h3, h4 {
   flex-wrap: nowrap !important;
   overflow-x: auto !important;
   scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
   gap: 18px;
   width: 100%;
   padding-bottom: 18px;
@@ -1548,6 +1547,31 @@ h1, h2, h3, h4 {
   white-space: nowrap;
   max-width: calc(100% - 20px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* ELEGANT "REPRESENTATIVE IMAGE" LABEL AT BOTTOM-RIGHT OF EVERY GALLERY CARD */
+.gallery-card-item::after,
+.representative-tag {
+  content: "Representative Image";
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 6;
+  background: rgba(11, 28, 22, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.92);
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  user-select: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  line-height: 1;
 }
 
 .badge-icon {
@@ -3444,4 +3468,156 @@ h1, h2, h3, h4 {
 .custom-toast-close:hover {
   color: #ffffff;
   background: rgba(255, 255, 255, 0.12);
+}
+
+/* ==========================================================================
+   CENTERED POPUP LEAD MODAL STYLING
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99999;
+  background: rgba(3, 25, 19, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.modal-overlay.open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+.modal-card {
+  position: relative;
+  background: #FFFFFF;
+  border-radius: 24px;
+  padding: 32px 28px 28px;
+  max-width: 440px;
+  width: 100%;
+  margin: 0 auto !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35), 0 0 30px rgba(200, 155, 60, 0.2);
+  border: 1.5px solid rgba(200, 155, 60, 0.3);
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--text-dark);
+}
+
+.modal-overlay.open .modal-card {
+  transform: scale(1) translateY(0);
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(6, 60, 45, 0.08);
+  border: none;
+  color: var(--dark-emerald);
+  font-size: 22px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.modal-close:hover {
+  background: rgba(6, 60, 45, 0.18);
+  transform: scale(1.1);
+}
+
+/* No-Backdrop Mode (For 15-second recurring popup - removes background overlay & blur so page stays visible) */
+.modal-overlay.no-backdrop {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  pointer-events: none !important;
+}
+
+.modal-overlay.no-backdrop .modal-card {
+  pointer-events: auto !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28), 0 0 25px rgba(200, 155, 60, 0.25);
+}
+
+/* ==========================================================================
+   MOBILE VIEW OPTIMIZATIONS (CALL BUTTON BLUE & TYPOLOGY ALIGNMENT)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Call Button in Blue for Mobile View */
+  .header-phone,
+  a[href^="tel:"] {
+    color: #1D4ED8 !important; /* Vibrant Luxury Blue */
+  }
+
+  .header-phone svg path,
+  a[href^="tel:"] svg path {
+    stroke: #1D4ED8 !important;
+    fill: none;
+  }
+
+  /* Saleable Area & Unit Typology Section Text Justification & Alignment */
+  .typology-header {
+    text-align: center !important;
+    padding: 0 12px;
+  }
+
+  .typology-headline {
+    text-align: center !important;
+    font-size: 1.7rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .typology-subtitle {
+    text-align: center !important;
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+    margin: 8px auto 0;
+    max-width: 320px;
+  }
+
+  .typology-table-card {
+    padding: 20px 10px !important;
+    border-radius: 16px !important;
+  }
+
+  .typology-custom-table th {
+    padding: 10px 6px !important;
+    font-size: 0.85rem !important;
+    text-align: center !important;
+  }
+
+  .typology-custom-table th.th-typology {
+    font-size: 0.88rem !important;
+    width: 44% !important;
+  }
+
+  .typology-custom-table td {
+    padding: 10px 8px !important;
+    font-size: 0.86rem !important;
+  }
+
+  .typology-custom-table td.td-typology {
+    font-size: 0.86rem !important;
+    text-align: left !important;
+  }
+
+  .typology-custom-table td.td-num {
+    font-size: 0.88rem !important;
+    text-align: center !important;
+  }
 }

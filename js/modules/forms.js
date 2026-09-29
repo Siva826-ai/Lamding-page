@@ -41,9 +41,29 @@ export function initForms(updateUnlockState, closeModal) {
     const name = nameInput ? nameInput.value.trim() : '';
     const mobile = mobileInput ? mobileInput.value.trim() : '';
     const email = emailInput ? emailInput.value.trim() : '';
+    const selectElem = form.querySelector('select[name="interest"], select[name="config"]');
+    const interest = selectElem && selectElem.value ? selectElem.value.trim() : 'Not Specified';
+    const hpInput = form.querySelector('input[name="website_hp"]');
+    const website_hp = hpInput ? hpInput.value.trim() : '';
 
-    if (!name || !mobile || !email) {
-      showCustomNotification('Required Fields Missing', 'Please complete all required fields before submitting.');
+    // Strict Mandatory Field Validation: Name and Phone Number are MANDATORY
+    const cleanPhoneDigits = mobile.replace(/\D/g, '');
+    if (!name || name.length < 2) {
+      showCustomNotification('Name Required', 'Please enter your Full Name before submitting.');
+      if (nameInput) nameInput.focus();
+      return;
+    }
+
+    if (!mobile || cleanPhoneDigits.length < 10) {
+      showCustomNotification('Valid Phone Number Required', 'Please enter a valid 10-digit Phone Number.');
+      if (mobileInput) mobileInput.focus();
+      return;
+    }
+
+    // Bot Defense: If honeypot is filled out by automated spam bot, stop processing
+    if (website_hp) {
+      showCustomNotification('Enquiry Submitted Successfully!', `Thank you, ${name}! Your enquiry for TVS Emerald AVALON has been received.`);
+      form.reset();
       return;
     }
 
@@ -54,8 +74,10 @@ export function initForms(updateUnlockState, closeModal) {
       submitBtn.innerHTML = 'Sending...';
     }
 
-    // 1. Submit to Web3Forms API (Delivers lead email directly to muthupattan@propfinder.org.in)
+    // 1. Submit to Web3Forms API (Delivers lead email)
     const web3Key = 'd97b2b67-f0c7-4f9c-ae6f-69394c2fc096';
+    const messageDetails = `Project Name: TVS Emerald AVALON\nInterested Configuration: ${interest}\nForm Source: ${sourceName}`;
+
     const web3Promise = fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -63,21 +85,24 @@ export function initForms(updateUnlockState, closeModal) {
         access_key: web3Key,
         subject: `New Lead Enquiry - TVS Emerald AVALON (${sourceName})`,
         from_name: 'TVS Emerald AVALON Landing Page',
-        to_email: 'muthupattan@propfinder.org.in',
         name: name,
         email: email,
         replyto: email,
         phone: mobile,
-        form_source: sourceName,
-        project_name: 'TVS Emerald AVALON'
+        message: messageDetails
       })
-    }).catch((err) => console.warn('Web3Forms dispatch error:', err));
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log('Web3Forms Response Status:', data);
+    })
+    .catch((err) => console.warn('Web3Forms dispatch error:', err));
 
-    // 2. Also submit to submit.php (Runs on cPanel/PHP host fallback)
+    // 2. Also submit to submit.php (Runs on cPanel/PHP host fallback with honeypot validation)
     const phpPromise = fetch('submit.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ name, mobile, email, form_source: sourceName, project_name: 'TVS Emerald AVALON' })
+      body: new URLSearchParams({ name, mobile, email, interest, form_source: sourceName, project_name: 'TVS Emerald AVALON', website_hp })
     }).catch(() => {});
 
     // Show Custom Luxury Toast Notification IMMEDIATELY
