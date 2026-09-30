@@ -35,12 +35,12 @@ export function initModal() {
     openModal('Priority Assistance - TVS Emerald Avalon', false);
   }, 1500);
 
-  // Auto-open Enquiry Popup every 35 seconds if closed (NO BACKDROP BLUR - website stays visible & scrollable!)
+  // Auto-open Enquiry Popup every 45 seconds if closed (NO BACKDROP BLUR - website stays visible & scrollable!)
   setInterval(() => {
     if (modalOverlay && !modalOverlay.classList.contains('open')) {
       openModal('Priority Assistance - TVS Emerald Avalon', true);
     }
-  }, 35000);
+  }, 45000);
 
   // Event Delegation for All Modal Triggers Across the Website
   document.addEventListener('click', (e) => {

@@ -1554,8 +1554,8 @@ h1, h2, h3, h4 {
 .representative-tag {
   content: "Representative Image";
   position: absolute;
-  bottom: 10px;
-  right: 10px;
+  bottom: 8px;
+  right: 8px;
   z-index: 6;
   background: rgba(11, 28, 22, 0.78);
   backdrop-filter: blur(8px);
@@ -1563,11 +1563,11 @@ h1, h2, h3, h4 {
   border: 1px solid rgba(255, 255, 255, 0.22);
   color: rgba(255, 255, 255, 0.92);
   font-family: 'Manrope', sans-serif;
-  font-size: 0.68rem;
+  font-size: 0.54rem;
   font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 6px;
-  letter-spacing: 0.02em;
+  padding: 3px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.01em;
   pointer-events: none;
   user-select: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
@@ -2389,6 +2389,95 @@ h1, h2, h3, h4 {
   font-size: 0.82rem;
   color: #64748B;
   font-weight: 600;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* FOOTER DISCLAIMER & AUTHORIZED CHANNEL PARTNER CARD (FIGMA MATCH) */
+.footer-disclaimer-wrapper {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid #E2DDD3;
+}
+
+.footer-disclaimer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-disclaimer-info h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--dark-emerald);
+  margin-bottom: 6px;
+}
+
+.footer-disclaimer-info p {
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.86rem;
+  color: #64748B;
+  max-width: 540px;
+  line-height: 1.5;
+}
+
+.footer-channel-partner-card {
+  background: #F4EFE6;
+  border: 1px solid #E2DDD3;
+  border-radius: 12px;
+  padding: 14px 20px;
+  min-width: 270px;
+  box-shadow: 0 4px 14px rgba(6, 60, 45, 0.04);
+}
+
+.footer-channel-partner-card .cp-heading {
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--dark-emerald);
+  margin-bottom: 4px;
+}
+
+.footer-channel-partner-card .cp-line {
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.78rem;
+  color: #475569;
+  line-height: 1.45;
+}
+
+.footer-disclaimer-body {
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.78rem;
+  color: #64748B;
+  line-height: 1.65;
+  margin-bottom: 20px;
+}
+
+.footer-disclaimer-body strong {
+  color: #334155;
+}
+
+.footer-bottom-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-bottom-links a {
+  color: #64748B;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.footer-bottom-links a:hover {
+  color: var(--dark-emerald);
+  text-decoration: underline;
 }
 
 /* Mobile Sticky Action Bar */
