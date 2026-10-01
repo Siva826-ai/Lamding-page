@@ -1,0 +1,23 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark Emerald Background with Rounded Corners -->
+  <rect width="512" height="512" rx="96" fill="#063C2D"/>
+  
+  <!-- Gold Outer Frame Accent -->
+  <rect x="16" y="16" width="480" height="480" rx="80" stroke="#C89B3C" stroke-width="14"/>
+  
+  <!-- TVS Bold Italic Text -->
+  <text x="32" y="295" font-family="'Manrope', 'Arial Black', sans-serif" font-weight="900" font-style="italic" font-size="145" fill="#FFFFFF" letter-spacing="-2">TVS</text>
+  
+  <!-- Emerald Green Badge with Slanted Top Roof -->
+  <g transform="translate(255, 100)">
+    <!-- Slanted Roof Highlight -->
+    <path d="M0 75 L210 0 L210 25 L0 100 Z" fill="#6BB238"/>
+    <!-- Main Green Body -->
+    <path d="M0 105 L210 30 L210 245 L0 245 Z" fill="#2E8B34"/>
+    <!-- White Text Emerald -->
+    <text x="22" y="200" font-family="'Georgia', Georgia, serif" font-weight="600" font-size="80" fill="#FFFFFF">Emerald</text>
+  </g>
+  
+  <!-- Gold Accent Bar at Bottom -->
+  <rect x="40" y="395" width="432" height="20" rx="10" fill="#C89B3C"/>
+</svg>

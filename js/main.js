@@ -10,9 +10,17 @@ import { initForms } from './modules/forms.js';
 import { initGallery } from './modules/gallery.js';
 import { initConnectivity } from './modules/connectivity.js';
 import { initCountryPickers } from './modules/countryPicker.js';
+import { initFavicon } from './modules/favicon.js';
+import { initNavigation } from './modules/navigation.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 0. Country Pickers
+  // Favicon dynamic initialization
+  initFavicon();
+
+  // 0. Smooth Navigation & Active Link Highlight
+  initNavigation();
+
+  // 0.1 Country Pickers
   initCountryPickers();
 
   // 1. Mobile Navigation

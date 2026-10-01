@@ -1,0 +1,9 @@
+<svg width="180" height="180" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" rx="12" fill="#063C2D"/>
+  <rect x="1" y="1" width="62" height="62" rx="11" stroke="#C89B3C" stroke-width="2"/>
+  <text x="6" y="36" font-family="'Manrope', 'Arial Black', sans-serif" font-weight="900" font-style="italic" font-size="18" fill="#FFFFFF">TVS</text>
+  <path d="M33 20 L58 11 L58 15 L33 24 Z" fill="#6BB238"/>
+  <rect x="33" y="24" width="25" height="20" fill="#2E8B34"/>
+  <text x="40" y="39" font-family="'Georgia', Georgia, serif" font-weight="700" font-size="13" fill="#FFFFFF">E</text>
+  <rect x="6" y="50" width="52" height="3" fill="#C89B3C"/>
+</svg>

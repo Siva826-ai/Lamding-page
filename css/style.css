@@ -34,7 +34,21 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+html { scroll-behavior: smooth; scroll-padding-top: 85px; }
+
+#overview,
+#highlights,
+#price,
+#pricing,
+#typology-pricing,
+#floor-plans,
+#amenities,
+#gallery,
+#location,
+#developer,
+#callback {
+  scroll-margin-top: 85px;
+}
 
 body {
   font-family: 'Manrope', system-ui, -apple-system, sans-serif;
@@ -128,8 +142,18 @@ h1, h2, h3, h4 {
 .brand-divider { color: #BBB; font-weight: 300; font-size: 1.2rem; margin: 0 2px; }
 
 .header-nav { display: flex; align-items: center; gap: 24px; }
-.header-nav a { font-size: 0.88rem; font-weight: 700; color: var(--text-dark); }
-.header-nav a:hover { color: var(--gold); }
+.header-nav a { font-size: 0.88rem; font-weight: 700; color: var(--text-dark); position: relative; transition: color 0.2s ease; }
+.header-nav a:hover, .header-nav a.active { color: var(--dark-emerald); }
+.header-nav a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background-color: var(--gold);
+  border-radius: 99px;
+}
 
 .header-right { display: flex; align-items: center; gap: 20px; }
 .header-phone { font-weight: 800; font-size: 0.9rem; color: var(--dark-emerald); display: flex; align-items: center; gap: 6px; }
@@ -137,7 +161,8 @@ h1, h2, h3, h4 {
 .mobile-toggle { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--dark-emerald); }
 .mobile-menu-drawer { display: none; position: fixed; top: var(--header-h); left: 0; right: 0; background: #FFF; border-bottom: 2px solid var(--gold); padding: 24px; box-shadow: var(--shadow-card); z-index: 99; }
 .mobile-menu-drawer.open { display: flex; flex-direction: column; gap: 14px; }
-.mobile-menu-drawer a { font-size: 1.05rem; font-weight: 700; color: var(--dark-emerald); padding-bottom: 8px; border-bottom: 1px solid var(--border-light); }
+.mobile-menu-drawer a { font-size: 1.05rem; font-weight: 700; color: var(--dark-emerald); padding-bottom: 8px; border-bottom: 1px solid var(--border-light); transition: color 0.2s ease; }
+.mobile-menu-drawer a.active { color: var(--gold); font-weight: 800; }
 
 /* ==========================================================================
    HERO SECTION & CINEMATIC MOTION GRAPHIC BACKDROP
