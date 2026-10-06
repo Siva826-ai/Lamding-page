@@ -61,7 +61,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email_headers .= "Reply-To: $clean_name <$clean_email>\r\n";
     $email_headers .= "X-Mailer: PHP/" . phpversion();
 
-    if (@mail($to_email, $subject, $email_content, $email_headers)) {
+    // Send Email
+    $mail_sent = @mail($to_email, $subject, $email_content, $email_headers);
+
+    // 4. LEADRAT CRM INTEGRATION (Server-Side PHP Fallback)
+    $leadrat_api_key = getenv('LEADRAT_API_KEY') ?: "N2FmNjU3ZmItNmY3OC00MTc4LTg0ZGQtOWIwNDZmYTQ0Mjlm";
+    $clean_phone = preg_replace('/[^0-9]/', '', $phone);
+    if (strlen($clean_phone) > 10) {
+        $clean_phone = substr($clean_phone, -10);
+    }
+
+    $project_name = isset($_POST['project_name']) ? $_POST['project_name'] : 'TVS Emerald AVALON';
+    $raw_message = isset($_POST['message']) ? trim($_POST['message']) : '';
+
+    $notes = "Interested Configuration: " . $interest . " | Source: " . $form_source;
+    if (!empty($raw_message)) {
+        $notes = $raw_message . " | " . $notes;
+    }
+
+    $leadrat_payload = array(
+        array(
+            "name"        => $name,
+            "state"       => isset($_POST['state']) && !empty($_POST['state']) ? trim($_POST['state']) : "Tamil Nadu",
+            "city"        => isset($_POST['city']) && !empty($_POST['city']) ? trim($_POST['city']) : "Chennai",
+            "location"    => isset($_POST['location']) && !empty($_POST['location']) ? trim($_POST['location']) : "Pallavaram, Chennai",
+            "budget"      => $interest,
+            "notes"       => $notes,
+            "email"       => $clean_email,
+            "countryCode" => "91",
+            "mobile"      => $clean_phone,
+            "project"     => $project_name
+        )
+    );
+
+    if (function_exists('curl_init')) {
+        $ch = curl_init('https://connect.leadrat.com/api/v1/integration/Website');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'API-Key: ' . $leadrat_api_key,
+            'X-API-Key: ' . $leadrat_api_key
+        ));
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($leadrat_payload));
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        $leadrat_res = curl_exec($ch);
+        curl_close($ch);
+    }
+
+    if ($mail_sent) {
         http_response_code(200);
         echo json_encode(["status" => "success", "message" => "Enquiry received successfully."]);
     } else {
@@ -73,3 +121,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo json_encode(["status" => "error", "message" => "Invalid request method."]);
 }
 ?>
+

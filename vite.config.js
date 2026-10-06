@@ -254,13 +254,57 @@ generateFaviconFiles();
 export default defineConfig({
   plugins: [
     {
-      name: 'generate-tvs-favicons',
+      name: 'generate-tvs-favicons-and-leadrat-proxy',
       buildStart() {
         generateFaviconFiles();
       },
-      configureServer() {
+      configureServer(server) {
         generateFaviconFiles();
+        
+        // Local Dev Proxy for Netlify Function /.netlify/functions/leadrat
+        server.middlewares.use('/.netlify/functions/leadrat', (req, res) => {
+          if (req.method !== 'POST') {
+            res.statusCode = 405;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ error: 'Method Not Allowed' }));
+            return;
+          }
+
+          let body = '';
+          req.on('data', chunk => { body += chunk; });
+          req.on('end', async () => {
+            try {
+              const apiKey = process.env.LEADRAT_API_KEY || 'N2FmNjU3ZmItNmY3OC00MTc4LTg0ZGQtOWIwNDZmYTQ0Mjlm';
+              const leadPayload = JSON.parse(body);
+
+              console.log('[Dev Proxy] Sending lead to LeadRat CRM API...');
+
+              const apiRes = await fetch('https://connect.leadrat.com/api/v1/integration/Website', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'API-Key': apiKey,
+                  'X-API-Key': apiKey
+                },
+                body: JSON.stringify(leadPayload)
+              });
+
+              const responseText = await apiRes.text();
+              console.log(`[Dev Proxy] LeadRat Response (${apiRes.status}):`, responseText);
+
+              res.statusCode = apiRes.status;
+              res.setHeader('Content-Type', 'application/json');
+              res.end(responseText);
+            } catch (err) {
+              console.error('[Dev Proxy] LeadRat error:', err);
+              res.statusCode = 500;
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ error: err.message }));
+            }
+          });
+        });
       }
     }
   ]
 });
+

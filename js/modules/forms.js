@@ -160,6 +160,21 @@ export function initForms(updateUnlockState, closeModal) {
       submitBtn.innerHTML = 'Sending...';
     }
 
+    const msgInput = form.querySelector('input[name="message"], textarea[name="message"]');
+    const userMessage = msgInput ? msgInput.value.trim() : '';
+
+    const locationInput = form.querySelector('input[name="location"]');
+    const userLocation = locationInput && locationInput.value.trim() ? locationInput.value.trim() : 'Pallavaram, Chennai';
+
+    const budgetInput = form.querySelector('input[name="budget"], select[name="budget"]');
+    const userBudget = budgetInput && budgetInput.value.trim() ? budgetInput.value.trim() : (interest || '');
+
+    const stateInput = form.querySelector('input[name="state"]');
+    const userState = stateInput && stateInput.value.trim() ? stateInput.value.trim() : 'Tamil Nadu';
+
+    const cityInput = form.querySelector('input[name="city"]');
+    const userCity = cityInput && cityInput.value.trim() ? cityInput.value.trim() : 'Chennai';
+
     // 1. Submit to Web3Forms API (Delivers lead email)
     const web3Key = 'd97b2b67-f0c7-4f9c-ae6f-69394c2fc096';
     const messageDetails = `Project Name: TVS Emerald AVALON\nInterested Configuration: ${interest || 'Not Specified'}\nForm Source: ${sourceName}`;
@@ -184,12 +199,78 @@ export function initForms(updateUnlockState, closeModal) {
     })
     .catch((err) => console.warn('Web3Forms dispatch error:', err));
 
-    // 2. Also submit to submit.php (Runs on cPanel/PHP host fallback)
+    // 2. Also submit to submit.php (Runs on cPanel/PHP host fallback with LeadRat cURL)
     const phpPromise = fetch('submit.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ name, mobile, email, interest: interest || 'Not Specified', form_source: sourceName, project_name: 'TVS Emerald AVALON', website_hp })
+      body: new URLSearchParams({
+        name,
+        mobile,
+        email,
+        interest: interest || 'Not Specified',
+        form_source: sourceName,
+        project_name: 'TVS Emerald AVALON',
+        message: userMessage,
+        location: userLocation,
+        budget: userBudget,
+        state: userState,
+        city: userCity,
+        website_hp
+      })
     }).catch(() => {});
+
+    // 3. LeadRat CRM Integration (Netlify Serverless Proxy)
+    let leadNotes = '';
+    if (userMessage && interest) {
+      leadNotes = `${userMessage} | Configuration: ${interest} | Source: ${sourceName}`;
+    } else if (userMessage) {
+      leadNotes = `${userMessage} | Source: ${sourceName}`;
+    } else if (interest) {
+      leadNotes = `Interested Configuration: ${interest} | Source: ${sourceName}`;
+    } else {
+      leadNotes = `Source: ${sourceName}`;
+    }
+
+    const leadratPayload = [
+      {
+        name: name,
+        state: userState,
+        city: userCity,
+        location: userLocation,
+        budget: userBudget,
+        notes: leadNotes,
+        email: email,
+        countryCode: '91',
+        mobile: mobile.replace(/\D/g, ''),
+        project: 'TVS Emerald AVALON'
+      }
+    ];
+
+    const leadratPromise = fetch('/.netlify/functions/leadrat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(leadratPayload)
+    })
+    .then(async (res) => {
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        console.log('LeadRat CRM submission success (200 OK):', data);
+      } else {
+        console.warn(`LeadRat CRM submission status ${res.status}:`, data);
+      }
+    })
+    .catch((err) => {
+      console.warn('LeadRat CRM non-blocking error:', err);
+    });
+
+    // Google Analytics & Google Ads Event Tracking Integration
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'generate_lead', {
+        event_category: 'Engagement',
+        event_label: sourceName,
+        value: 1
+      });
+    }
 
     // Show Custom Luxury Toast Notification IMMEDIATELY
     showCustomNotification(
@@ -207,12 +288,13 @@ export function initForms(updateUnlockState, closeModal) {
       closeModal();
     }
 
-    await Promise.allSettled([web3Promise, phpPromise]);
+    await Promise.allSettled([web3Promise, phpPromise, leadratPromise]);
 
     if (submitBtn) {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalBtnText;
     }
+
   }
 
   const heroCardForm = document.getElementById('heroCardForm');
