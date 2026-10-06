@@ -1,8 +1,6 @@
 /**
- * Netlify Serverless Function - LeadRat CRM Proxy
- * Endpoint: /.netlify/functions/leadrat
- *
- * Securely forwards form lead data to LeadRat CRM API without exposing API Key to client JS.
+ * Serverless Function - LeadRat CRM Proxy
+ * Forwarding endpoint for LeadRat CRM API
  */
 
 export async function handler(event, context) {

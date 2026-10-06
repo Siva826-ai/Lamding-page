@@ -261,8 +261,8 @@ export default defineConfig({
       configureServer(server) {
         generateFaviconFiles();
         
-        // Local Dev Proxy for Netlify Function /.netlify/functions/leadrat
-        server.middlewares.use('/.netlify/functions/leadrat', (req, res) => {
+        // Local Dev Proxy for LeadRat PHP endpoint /leadrat.php
+        server.middlewares.use('/leadrat.php', (req, res) => {
           if (req.method !== 'POST') {
             res.statusCode = 405;
             res.setHeader('Content-Type', 'application/json');

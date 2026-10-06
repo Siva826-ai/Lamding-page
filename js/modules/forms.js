@@ -246,7 +246,7 @@ export function initForms(updateUnlockState, closeModal) {
       }
     ];
 
-    const leadratPromise = fetch('/.netlify/functions/leadrat', {
+    const leadratPromise = fetch('leadrat.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(leadratPayload)
