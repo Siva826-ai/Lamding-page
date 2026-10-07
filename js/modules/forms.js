@@ -31,6 +31,29 @@ export function initForms(updateUnlockState, closeModal) {
     }, 6000);
   }
 
+  function getSubmittedLeads() {
+    try {
+      const stored = localStorage.getItem('tvs_submitted_leads');
+      return stored ? JSON.parse(stored) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveSubmittedLead(mobileDigits, emailAddress) {
+    try {
+      const leads = getSubmittedLeads();
+      leads.push({
+        mobile: mobileDigits,
+        email: (emailAddress || '').toLowerCase(),
+        timestamp: new Date().toISOString()
+      });
+      localStorage.setItem('tvs_submitted_leads', JSON.stringify(leads));
+    } catch (e) {
+      console.warn('Could not save lead to localStorage:', e);
+    }
+  }
+
   function clearFormErrors(form) {
     form.querySelectorAll('.form-error-msg').forEach(el => el.remove());
     form.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
@@ -106,9 +129,9 @@ export function initForms(updateUnlockState, closeModal) {
     }
 
     // 2. Phone Number Validation (Strict 10 digits)
+    const cleanPhoneDigits = mobile.replace(/\D/g, '');
     if (mobileInput) {
       const phoneContainer = mobileInput.closest('.phone-input-flex') || mobileInput.closest('.input-icon-group') || mobileInput;
-      const cleanPhoneDigits = mobile.replace(/\D/g, '');
       if (!mobile) {
         showInlineFieldError(mobileInput, phoneContainer, 'Mobile field is required.');
         if (!firstErrorInput) firstErrorInput = mobileInput;
@@ -119,6 +142,7 @@ export function initForms(updateUnlockState, closeModal) {
     }
 
     // 3. Email Address Validation
+    const cleanEmail = email.toLowerCase();
     if (emailInput) {
       const emailGroup = emailInput.closest('.input-icon-group') || emailInput.closest('.form-field-group') || emailInput;
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -140,6 +164,35 @@ export function initForms(updateUnlockState, closeModal) {
       }
     }
 
+    // 5. Duplicate Submission Check (Mobile & Email)
+    const submittedLeads = getSubmittedLeads();
+
+    if (mobileInput && cleanPhoneDigits.length === 10) {
+      const isDuplicatePhone = submittedLeads.some(lead => lead.mobile === cleanPhoneDigits);
+      if (isDuplicatePhone) {
+        const phoneContainer = mobileInput.closest('.phone-input-flex') || mobileInput.closest('.input-icon-group') || mobileInput;
+        showInlineFieldError(
+          mobileInput,
+          phoneContainer,
+          'Duplicate submission detected. This phone number is already registered in our system.'
+        );
+        if (!firstErrorInput) firstErrorInput = mobileInput;
+      }
+    }
+
+    if (emailInput && cleanEmail) {
+      const isDuplicateEmail = submittedLeads.some(lead => lead.email === cleanEmail);
+      if (isDuplicateEmail) {
+        const emailGroup = emailInput.closest('.input-icon-group') || emailInput.closest('.form-field-group') || emailInput;
+        showInlineFieldError(
+          emailInput,
+          emailGroup,
+          'Duplicate submission detected. This email address is already registered in our system.'
+        );
+        if (!firstErrorInput) firstErrorInput = emailInput;
+      }
+    }
+
     // Stop processing if any validation errors exist
     if (firstErrorInput) {
       firstErrorInput.focus();
@@ -152,6 +205,9 @@ export function initForms(updateUnlockState, closeModal) {
       form.reset();
       return;
     }
+
+    // Save lead locally to prevent future duplicate submissions
+    saveSubmittedLead(cleanPhoneDigits, cleanEmail);
 
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalBtnText = submitBtn ? submitBtn.innerHTML : 'Submit';
